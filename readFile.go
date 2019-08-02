@@ -41,6 +41,7 @@ func readFile() {
 		if temp != record[0] {
 			fmt.Printf("omg")
 		}
+		//change user id
 
 		fmt.Println(record[0], record[1], record[2], record[3])
 		temp = record[0]
