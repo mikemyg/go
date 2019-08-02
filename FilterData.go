@@ -8,5 +8,16 @@ func filterData(data userData) userData {
 	// 		return
 	// 	}
 	// }
-	return userData{}
+	//take user data and return filtered data using haversineFormula/diaforaXronou
+
+	dummyData := userData{
+		id: 1,
+		data: []gpsData{{
+			lat:       37.944117,
+			lng:       23.677613,
+			timestamp: 1405595429},
+		},
+	}
+
+	return dummyData
 }
