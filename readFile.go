@@ -9,11 +9,13 @@ import (
 	"strconv"
 )
 
-func readFile() {
+func readFile() []userData {
+
+	var drivers []userData
 
 	if len(os.Args) < 2 {
 		fmt.Println("Missing parameter, provide file name!")
-		return
+		return drivers
 	}
 
 	csvfile, err := os.Open(os.Args[1])
@@ -24,7 +26,6 @@ func readFile() {
 
 	r := csv.NewReader(csvfile)
 
-	var drivers []userData
 	var prevId int64 = -1
 	var itt int = -1
 	for {
@@ -49,8 +50,9 @@ func readFile() {
 			drivers = append(drivers, userData{id: id})
 
 		}
+
 		drivers[itt].data = append(drivers[itt].data, data)
 		prevId = id
 	}
-
+	return drivers
 }
