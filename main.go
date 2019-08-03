@@ -10,14 +10,27 @@ func main() {
 	drivers := readFile()
 
 	//create channel to filter data
-	c := make(chan []gpsData)
+	cFilter := make(chan []gpsData)
 
-	for i, v := range drivers {
-		go fltrData(v.data, c)
-		drivers[i].data = append([]gpsData(nil), <-c...)
+	for _, v := range drivers {
+		go fltrData(v.data, cFilter)
+	}
+	for i, _ := range drivers {
+		drivers[i].data = append([]gpsData(nil), <-cFilter...)
 	}
 
-	
+	cFareCalc := make(chan float64)
+
+	for _, v := range drivers {
+		go fareCalc(v.data, cFareCalc)
+	}
+
+	var expData []exportData
+	for i, _ := range drivers {
+		expData = append(expData, exportData{id_ride: i, fare_estimate: <-cFareCalc})
+	}
+
+	writeFile(expData)
 
 	elapsed := time.Since(start)
 	log.Printf("Binomial took %s", elapsed)

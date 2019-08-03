@@ -1,6 +1,6 @@
 package main
 
-func fareCalc([]gpsData) float64 {
+func fareCalc(d []gpsData, c chan float64) {
 
 	const DayCostPKM = 0.74
 	const NightCostPKM = 1.30
@@ -8,6 +8,6 @@ func fareCalc([]gpsData) float64 {
 	const FlagAmount = 1.3
 	const MinAmount = 3.47
 
-	return 2.2
+	c <- 2.2
 
 }
