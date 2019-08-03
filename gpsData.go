@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 type userData struct {
-	id   int
+	id   int64
 	data []gpsData
 }
 

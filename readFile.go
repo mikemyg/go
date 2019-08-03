@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"strconv"
 )
 
 func readFile() {
@@ -21,15 +22,13 @@ func readFile() {
 		log.Fatalln("Couldn't open the csv file", err)
 	}
 
-	// Parse the file
 	r := csv.NewReader(csvfile)
-	//r := csv.NewReader(bufio.NewReader(csvfile))
 
-	// Iterate through the records
-	var temp string
+	var drivers []userData
+	var prevId int64 = -1
+	var itt int = -1
 	for {
 
-		// Read each record from csv
 		record, err := r.Read()
 		if err == io.EOF {
 			break
@@ -38,12 +37,20 @@ func readFile() {
 			log.Fatal(err)
 		}
 
-		if temp != record[0] {
-			fmt.Printf("omg")
-		}
-		//change user id
+		id, _ := strconv.ParseInt(record[0], 10, 64)
+		lat, _ := strconv.ParseFloat(record[1], 64)
+		lng, _ := strconv.ParseFloat(record[2], 64)
+		timestamp, _ := strconv.ParseInt(record[3], 10, 64)
 
-		fmt.Println(record[0], record[1], record[2], record[3])
-		temp = record[0]
+		data := gpsData{lat: lat, lng: lng, timestamp: timestamp}
+
+		if id != prevId {
+			itt++
+			drivers = append(drivers, userData{id: id})
+
+		}
+		drivers[itt].data = append(drivers[itt].data, data)
+		prevId = id
 	}
+
 }
