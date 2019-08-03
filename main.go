@@ -26,8 +26,8 @@ func main() {
 	}
 
 	var expData []exportData
-	for i, _ := range drivers {
-		expData = append(expData, exportData{id_ride: i, fare_estimate: <-cFareCalc})
+	for _, v := range drivers {
+		expData = append(expData, exportData{id_ride: v.id, fare_estimate: <-cFareCalc})
 	}
 
 	writeFile(expData)

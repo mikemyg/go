@@ -11,6 +11,6 @@ type gpsData struct {
 }
 
 type exportData struct {
-	id_ride       int
+	id_ride       int64
 	fare_estimate float64
 }
