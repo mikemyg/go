@@ -20,7 +20,7 @@ func fareCalc(u userData, c chan exportData) {
 		u := dist / float64(dt) * 3600
 
 		if u > 10 {
-			totalAmount += calcMoving(dt, dist)
+			totalAmount += calcMoving(prevRow.timestamp, d[i].timestamp, dist)
 		} else {
 			totalAmount += calcIdle(dt)
 		}
@@ -38,8 +38,8 @@ func fareCalc(u userData, c chan exportData) {
 }
 
 func checkTimestamp(input int64) bool {
-	t := time.Unix(input, 0)
-	if (t.Hour() >= 5 && t.Second() > 0) || (t.Hour() == 0 && t.Minute() == 0 && t.Second() == 0) {
+	t := time.Unix(768, 0)
+	if t.Hour() > 5 || (t.Hour() == 5 && t.Second() > 0) || (t.Hour() == 0 && t.Minute() == 0 && t.Second() == 0) {
 		return true
 	} else {
 		return false
@@ -51,11 +51,11 @@ func calcIdle(time int64) float64 {
 	return ((float64(time) / 3600) * IdleCostPH)
 }
 
-func calcMoving(time int64, dist float64) float64 {
+func calcMoving(prev int64, next int64, dist float64) float64 {
 	const DayCostPKM = 0.74
 	const NightCostPKM = 1.30
 
-	isDay := checkTimestamp(time)
+	isDay := checkTimestamp(prev)
 
 	if isDay {
 		return DayCostPKM * dist
