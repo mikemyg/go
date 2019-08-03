@@ -38,7 +38,8 @@ func fareCalc(u userData, c chan exportData) {
 }
 
 func checkTimestamp(input int64) bool {
-	t := time.Unix(768, 0)
+	t := time.Unix(input, 0)
+
 	if t.Hour() > 5 || (t.Hour() == 5 && t.Second() > 0) || (t.Hour() == 0 && t.Minute() == 0 && t.Second() == 0) {
 		return true
 	} else {
