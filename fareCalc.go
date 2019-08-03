@@ -4,7 +4,9 @@ import (
 	"time"
 )
 
-func fareCalc(d []gpsData, c chan float64) {
+func fareCalc(u userData, c chan exportData) {
+
+	d := u.data
 
 	const FlagAmount = 1.3
 	const MinAmount = 3.47
@@ -29,7 +31,9 @@ func fareCalc(d []gpsData, c chan float64) {
 		totalAmount = MinAmount
 	}
 
-	c <- totalAmount
+	exportD := exportData{id_ride: u.id, fare_estimate: totalAmount}
+
+	c <- exportD
 
 }
 

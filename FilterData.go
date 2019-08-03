@@ -1,7 +1,8 @@
 package main
 
-func fltrData(d []gpsData, c chan []gpsData) {
+func filterData(u userData, c chan userData) {
 	var filteredArr []gpsData
+	d := u.data
 	prevRow := gpsData{lat: d[0].lat, lng: d[0].lng, timestamp: d[0].timestamp}
 	indexStart := 1
 	initRowCheck := false
@@ -29,5 +30,7 @@ func fltrData(d []gpsData, c chan []gpsData) {
 		}
 	}
 
-	c <- filteredArr
+	u.data = append([]gpsData(nil), filteredArr...)
+
+	c <- u
 }

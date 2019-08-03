@@ -10,24 +10,25 @@ func main() {
 	drivers := readFile()
 
 	//create channel to filter data
-	cFilter := make(chan []gpsData)
+	cFilter := make(chan userData)
 
 	for _, v := range drivers {
-		go fltrData(v.data, cFilter)
+		go filterData(v, cFilter)
 	}
-	for i, _ := range drivers {
-		drivers[i].data = append([]gpsData(nil), <-cFilter...)
+	var filteredDrivers []userData
+	for i := 0; i < len(drivers); i++ {
+		filteredDrivers = append(filteredDrivers, <-cFilter)
 	}
 
-	cFareCalc := make(chan float64)
+	cFareCalc := make(chan exportData)
 
 	for _, v := range drivers {
-		go fareCalc(v.data, cFareCalc)
+		go fareCalc(v, cFareCalc)
 	}
 
 	var expData []exportData
-	for _, v := range drivers {
-		expData = append(expData, exportData{id_ride: v.id, fare_estimate: <-cFareCalc})
+	for i := 0; i < len(drivers); i++ {
+		expData = append(expData, <-cFareCalc)
 	}
 
 	writeFile(expData)
