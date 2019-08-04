@@ -7,7 +7,7 @@ import (
 
 func writeFile(expData []exportData) {
 
-	f, err := os.Create("text.txt")
+	f, err := os.Create("result.txt")
 	check(err)
 	defer f.Close()
 	for _, v := range expData {
