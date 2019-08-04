@@ -5,9 +5,10 @@ import (
 	"strconv"
 )
 
-func writeFile(expData []exportData) {
+func writeFile(expData []exportData) string {
 
-	f, err := os.Create("result.txt")
+	file := Filename + "_result.txt"
+	f, err := os.Create(file)
 	check(err)
 	defer f.Close()
 	for _, v := range expData {
@@ -15,7 +16,7 @@ func writeFile(expData []exportData) {
 		_, err := f.Write(d2)
 		check(err)
 	}
-
+	return file
 }
 
 func check(e error) {

@@ -3,13 +3,18 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 )
+
+var Filename = ""
 
 func main() {
 	//read file
 	if len(os.Args) < 2 {
 		fmt.Println("Missing parameter, provide file name!")
 	}
+
+	Filename = os.Args[1][:strings.IndexByte(os.Args[1], '.')]
 
 	drivers := readFile(os.Args[1])
 
@@ -37,6 +42,6 @@ func main() {
 	}
 
 	//write report to file
-	writeFile(expData)
+	_ = writeFile(expData)
 
 }
