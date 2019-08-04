@@ -13,7 +13,7 @@ func TestMain(t *testing.T) {
 
 	//end to end test with sample data as input with the acceptance that my result is correct
 	testFile := "paths.csv"
-	Filename = testFile[:strings.IndexByte(testFile, '.')]
+	Filename = "main_test_" + testFile[:strings.IndexByte(testFile, '.')]
 	drivers := readFile("paths.csv")
 
 	cFilter := make(chan userData)
@@ -40,16 +40,27 @@ func TestMain(t *testing.T) {
 	filename := writeFile(expData)
 
 	//read result file and compare with the correct data
-	testResult := readTxt(filename)
+	result := readTxt(filename)
 
-	for k, v := range testResult {
+	correctResult := [9]string{"11.677965", "13.131773", "35.346182", "3.470000", "22.797826", "9.820551", "31.662202", "9.366326", "6.442091"}
+	var correctMap = make(map[string]bool)
+
+	for i := 0; i < 9; i++ {
+		if result[strconv.Itoa(i+1)] == correctResult[i] {
+			correctMap[strconv.Itoa(i+1)] = true
+		} else {
+			correctMap[strconv.Itoa(i+1)] = false
+		}
+	}
+
+	for k, v := range correctMap {
 		if !v {
 			t.Errorf("wrong data for the ride with id %v", k)
 		}
 	}
 }
 
-func readTxt(filename string) map[string]bool {
+func readTxt(filename string) map[string]string {
 
 	var result = make(map[string]string)
 
@@ -69,16 +80,6 @@ func readTxt(filename string) map[string]bool {
 		log.Fatal(err)
 	}
 
-	correctResult := [9]string{"11.677965", "13.131773", "35.346182", "3.470000", "22.797826", "9.820551", "31.662202", "9.366326", "6.442091"}
-	var correctMap = make(map[string]bool)
+	return result
 
-	for i := 0; i < 9; i++ {
-		if result[strconv.Itoa(i+1)] == correctResult[i] {
-			correctMap[strconv.Itoa(i+1)] = true
-		} else {
-			correctMap[strconv.Itoa(i+1)] = false
-		}
-	}
-
-	return correctMap
 }
