@@ -1,9 +1,17 @@
 package main
 
-func main() {
+import (
+	"fmt"
+	"os"
+)
 
+func main() {
 	//read file
-	drivers := readFile()
+	if len(os.Args) < 2 {
+		fmt.Println("Missing parameter, provide file name!")
+	}
+
+	drivers := readFile(os.Args[1])
 
 	//create channel to filter data
 	cFilter := make(chan userData)

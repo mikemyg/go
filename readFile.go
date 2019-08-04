@@ -2,24 +2,18 @@ package main
 
 import (
 	"encoding/csv"
-	"fmt"
 	"io"
 	"log"
 	"os"
 	"strconv"
 )
 
-func readFile() []userData {
+func readFile(file string) []userData {
 
 	var drivers []userData
 
 	//get file as arg
-	if len(os.Args) < 2 {
-		fmt.Println("Missing parameter, provide file name!")
-		return drivers
-	}
-
-	csvfile, err := os.Open(os.Args[1])
+	csvfile, err := os.Open(file)
 
 	if err != nil {
 		log.Fatalln("Couldn't open the csv file", err)
