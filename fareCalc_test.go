@@ -146,5 +146,3 @@ func TestCalcIdle(t *testing.T) {
 		t.Errorf("expected 0.029750000000000002 but got %v", amount)
 	}
 }
-
-//0.3636111111111111  4.660833333333334 6,32444444444444
