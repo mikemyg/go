@@ -8,14 +8,17 @@ import (
 
 func TestWriteFile(t *testing.T) {
 
+	//write a file with test data
 	testData := []exportData{{id_ride: 1, fare_estimate: 3.47}, {id_ride: 2, fare_estimate: 22.12}}
 	Filename = "write_file_test"
 	fileName := writeFile(testData)
 
+	//check if file is created
 	if _, err := os.Stat(fileName); os.IsNotExist(err) {
 		t.Errorf("file not created %v", err)
 	}
 
+	//read file and compare data with the correct data
 	result := readTxt(fileName)
 
 	correctResult := [2]float64{3.47, 22.12}
