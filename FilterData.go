@@ -5,7 +5,7 @@ func filterData(u userData, c chan userData) {
 	d := u.data
 	prevRow := gpsData{lat: d[0].lat, lng: d[0].lng, timestamp: d[0].timestamp}
 	indexStart := 1
-	if len(d) >= 4 {
+	if len(d) >= 5 {
 		initRowCheck := false
 		for i := 2; i < 5; i++ {
 			dt := d[i].timestamp - prevRow.timestamp
