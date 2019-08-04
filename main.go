@@ -1,12 +1,8 @@
 package main
 
-import (
-	"log"
-	"time"
-)
-
 func main() {
-	start := time.Now()
+
+	//read file
 	drivers := readFile()
 
 	//create channel to filter data
@@ -20,6 +16,7 @@ func main() {
 		filteredDrivers = append(filteredDrivers, <-cFilter)
 	}
 
+	//create channel to calculate cost
 	cFareCalc := make(chan exportData)
 
 	for _, v := range drivers {
@@ -31,8 +28,7 @@ func main() {
 		expData = append(expData, <-cFareCalc)
 	}
 
+	//write report to file
 	writeFile(expData)
 
-	elapsed := time.Since(start)
-	log.Printf("Binomial took %s", elapsed)
 }

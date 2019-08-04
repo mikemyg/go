@@ -11,14 +11,16 @@ func fareCalc(u userData, c chan exportData) {
 	const FlagAmount = 1.3
 	const MinAmount = 3.47
 
+	//init amount
 	totalAmount := FlagAmount
 
+	//get p1 and it through data
 	prevRow := gpsData{lat: d[0].lat, lng: d[0].lng, timestamp: d[0].timestamp}
 	for i := 1; i < len(d); i++ {
 		dt := d[i].timestamp - prevRow.timestamp
 		dist := harvesineFormula(prevRow.lat, prevRow.lng, d[i].lat, d[i].lng)
 		u := dist / float64(dt) * 3600
-
+		//get idle or moving cost
 		if u > 10 {
 			totalAmount += calcMoving(prevRow.timestamp, dist)
 		} else {
@@ -27,16 +29,18 @@ func fareCalc(u userData, c chan exportData) {
 		prevRow = gpsData{lat: d[i].lat, lng: d[i].lng, timestamp: d[i].timestamp}
 	}
 
+	//set minimum fare if cost less than 3.47
 	if totalAmount < MinAmount {
 		totalAmount = MinAmount
 	}
 
 	exportD := exportData{id_ride: u.id, fare_estimate: totalAmount}
-
+	//return report for this ride to channel
 	c <- exportD
 
 }
 
+//check if its day or night cost
 func checkTimestamp(input int64) bool {
 	t := time.Unix(input, 0)
 
